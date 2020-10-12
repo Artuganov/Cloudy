@@ -1,9 +1,4 @@
-//
-//  AppDelegate.swift
-//  Cloudy
-//
-//  Created by Martin Mlostek on 11.10.20.
-//
+// Copyright (c) 2020 Nomad5. All rights reserved.
 
 import UIKit
 

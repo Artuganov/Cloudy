@@ -1,3 +1,5 @@
+// Copyright (c) 2020 Nomad5. All rights reserved.
+
 import UIKit
 
 extension UIView {
