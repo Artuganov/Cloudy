@@ -5,19 +5,22 @@ import WebKit
 
 class ViewController: UIViewController {
 
-    /// The "hacked" webview
-    @IBOutlet var webViewContainer: UIView!
-    @IBOutlet var overlayContainer: UIView!
+    /// Containers
+    @IBOutlet var containerWebView: UIView!
+    @IBOutlet var containerMenu:    UIView!
 
+    /// View references
     @IBOutlet weak var userAgentTextField: UITextField!
     @IBOutlet weak var manualUserAgent:    UISwitch!
-    @IBOutlet weak var userAgentAuto:      UISwitch!
+    @IBOutlet weak var automaticUserAgent: UISwitch!
     @IBOutlet weak var backButton:         UIButton!
     @IBOutlet weak var forwardButton:      UIButton!
-    @IBOutlet weak var adressBar:          UITextField!
+    @IBOutlet weak var addressBar:         UITextField!
 
-    private var webview: WKWebView!
+    /// The hacked webView
+    private var webView: WKWebView!
 
+    /// By default hide the status bar
     override var prefersStatusBarHidden: Bool {
         true
     }
@@ -27,31 +30,29 @@ class ViewController: UIViewController {
         "https://play.geforcenow.com": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4183.121 Safari/537.36"
     ]
 
-    @IBAction func onDeleteCachePressed(_ sender: Any) {
-        WKWebView.clean()
-    }
+
 
     @IBAction func onManualUserAgentSwitchChanged(_ sender: Any) {
-        userAgentAuto.setOn(!manualUserAgent.isOn, animated: true)
+        automaticUserAgent.setOn(!manualUserAgent.isOn, animated: true)
     }
 
     @IBAction func onClearPressed(_ sender: Any) {
-        adressBar.text = ""
-        adressBar.becomeFirstResponder()
+        addressBar.text = ""
+        addressBar.becomeFirstResponder()
     }
 
     @IBAction func onOverlayClosePressed(_ sender: Any) {
-        overlayContainer.fadeOut()
-        adressBar.resignFirstResponder()
+        containerMenu.fadeOut()
+        addressBar.resignFirstResponder()
     }
 
     @IBAction func onMenuButtonPressed(_ sender: Any) {
-        overlayContainer.fadeIn()
+        containerMenu.fadeIn()
     }
 
     @IBAction func onAutoSwitchChanged(_ sender: Any) {
-        manualUserAgent.setOn(!userAgentAuto.isOn, animated: true)
-        userAgentTextField.isEnabled = !userAgentAuto.isOn
+        manualUserAgent.setOn(!automaticUserAgent.isOn, animated: true)
+        userAgentTextField.isEnabled = !automaticUserAgent.isOn
     }
 
     /// The configuration used for the wk webview
@@ -64,20 +65,79 @@ class ViewController: UIViewController {
         return config
     }()
 
+
+
+
+
+
+
+    @IBAction func onReloadPressed(_ sender: Any) {
+        webView.load(URLRequest(url: webView.url!))
+        containerMenu.fadeOut()
+        addressBar.resignFirstResponder()
+    }
+
+    /// View will be shown shortly
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        // configure webview
+        webView = WKWebView(frame: view.bounds, configuration: webViewConfig)
+        webView.translatesAutoresizingMaskIntoConstraints = false
+        containerWebView.addSubview(webView)
+        webView.leadingAnchor.constraint(equalTo: containerWebView.leadingAnchor).isActive = true
+        webView.trailingAnchor.constraint(equalTo: containerWebView.trailingAnchor).isActive = true
+        webView.topAnchor.constraint(equalTo: containerWebView.topAnchor).isActive = true
+        webView.bottomAnchor.constraint(equalTo: containerWebView.bottomAnchor).isActive = true
+        webView.navigationDelegate = self
+
+        // trigger login path
+//        webview.load(URLRequest(url: URL(string:"https://www.google.de")!))
+//        webview.load(URLRequest(url: URL(string: "https://play.geforcenow.com/mall/")!))
+//        webview.load(URLRequest(url: URL(string:"https://www.nvidia.com/en-us/account/gfn/")!))
+
+
+        if let lastVisitedUrl = UserDefaults.standard.lastVisitedUrl {
+            webView.load(URLRequest(url: URL(string: lastVisitedUrl)!))
+        } else {
+            webView.load(URLRequest(url: URL(string: "https://www.google.com")!))
+        }
+        let tap = UITapGestureRecognizer(target: self, action: #selector(onOverlayClosePressed))
+        containerMenu.addGestureRecognizer(tap)
+
+    }
+
+    func updateAdressbar() {
+        addressBar.text = webView.url?.absoluteString ?? ""
+        backButton.isEnabled = webView.canGoBack
+        forwardButton.isEnabled = webView.canGoForward
+    }
+
+    }
+
+/// UI handling extension
+extension ViewController {
+
+    /// Hide menu and keyboard
+    private func hideMenu() {
+        containerMenu.fadeOut()
+        addressBar.resignFirstResponder()
+    }
+
+    /// Forward
     @IBAction func onForwardPressed(_ sender: Any) {
-        webview.goForward()
-        overlayContainer.fadeOut()
-        adressBar.resignFirstResponder()
+        webView.goForward()
+        hideMenu()
     }
 
+    /// Go backward
     @IBAction func onBackPressed(_ sender: Any) {
-        webview.goBack()
-        overlayContainer.fadeOut()
-        adressBar.resignFirstResponder()
+        webView.goBack()
+        hideMenu()
     }
 
+    /// Navigate to a url
     @IBAction func onGoPressed(_ sender: Any) {
-        guard var text = adressBar.text else {
+        guard var text = addressBar.text else {
             print("ERROR, no adress give")
             return
         }
@@ -91,57 +151,14 @@ class ViewController: UIViewController {
             print("ERROR, URL")
             return
         }
-        webview.load(URLRequest(url: url))
-        overlayContainer.fadeOut()
-        adressBar.resignFirstResponder()
+        webView.load(URLRequest(url: url))
+        containerMenu.fadeOut()
+        addressBar.resignFirstResponder()
     }
 
-    @IBAction func onReloadPressed(_ sender: Any) {
-        webview.load(URLRequest(url: webview.url!))
-        overlayContainer.fadeOut()
-        adressBar.resignFirstResponder()
-    }
-
-    /// View will be shown shortly
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        // configure webview
-        webview = WKWebView(frame: view.bounds, configuration: webViewConfig)
-        webview.translatesAutoresizingMaskIntoConstraints = false
-        webViewContainer.addSubview(webview)
-        webview.leadingAnchor.constraint(equalTo: webViewContainer.leadingAnchor).isActive = true
-        webview.trailingAnchor.constraint(equalTo: webViewContainer.trailingAnchor).isActive = true
-        webview.topAnchor.constraint(equalTo: webViewContainer.topAnchor).isActive = true
-        webview.bottomAnchor.constraint(equalTo: webViewContainer.bottomAnchor).isActive = true
-        webview.navigationDelegate = self
-
-        // trigger login path
-//        webview.load(URLRequest(url: URL(string:"https://www.google.de")!))
-//        webview.load(URLRequest(url: URL(string: "https://play.geforcenow.com/mall/")!))
-//        webview.load(URLRequest(url: URL(string:"https://www.nvidia.com/en-us/account/gfn/")!))
-
-
-        if let lastVisitedUrl = UserDefaults.standard.lastVisitedUrl {
-            webview.load(URLRequest(url: URL(string: lastVisitedUrl)!))
-        } else {
-            webview.load(URLRequest(url: URL(string: "https://www.google.com")!))
-        }
-        let tap = UITapGestureRecognizer(target: self, action: #selector(onOverlayClosePressed))
-        overlayContainer.addGestureRecognizer(tap)
-
-    }
-
-    func updateAdressbar() {
-        adressBar.text = webview.url?.absoluteString ?? ""
-        backButton.isEnabled = webview.canGoBack
-        forwardButton.isEnabled = webview.canGoForward
-    }
-
-
-    func clearCache() {
-        let websiteDataTypes = NSSet(array: [WKWebsiteDataTypeDiskCache, WKWebsiteDataTypeMemoryCache])
-        let date             = Date(timeIntervalSince1970: 0)
-        WKWebsiteDataStore.default().removeData(ofTypes: websiteDataTypes as! Set<String>, modifiedSince: date, completionHandler: {})
+    /// Delete cache pressed
+    @IBAction func onDeleteCachePressed(_ sender: Any) {
+        WKWebView.clean()
     }
 }
 
@@ -150,7 +167,7 @@ extension ViewController: WKNavigationDelegate {
     /// When a stadia page finished loading, inject the controller override script
     func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
 //        if let url = webview.url?.absoluteString, url.starts(with: Config.Url.stadia.absoluteString) {
-        webview.injectControllerScript()
+        webView.injectControllerScript()
         updateAdressbar()
         UserDefaults.standard.lastVisitedUrl = webView.url?.absoluteString
 //        }
@@ -158,11 +175,11 @@ extension ViewController: WKNavigationDelegate {
 
     /// After successfully logging in, forward user to stadia
     func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
-//
+
         // if no automatic behavior is desired
-        guard userAgentAuto.isEnabled,
+        guard automaticUserAgent.isEnabled,
               let requestedUrl = navigationAction.request.url?.absoluteString else {
-            webview.customUserAgent = userAgentTextField.text ?? ""
+            webView.customUserAgent = userAgentTextField.text ?? ""
             decisionHandler(.allow)
             return
         }
@@ -170,17 +187,16 @@ extension ViewController: WKNavigationDelegate {
         if requestedUrl.starts(with: "https://stadia.google.com/warning/") &&
            requestedUrl.reversed().starts(with: "redirect_reasons=9".reversed()) {
             decisionHandler(.cancel)
-            webview.customUserAgent = Config.UserAgent.chromeDesktop
-            webview.load(URLRequest(url: Config.Url.stadia))
+            webView.customUserAgent = Config.UserAgent.chromeDesktop
+            webView.load(URLRequest(url: Config.Url.stadia))
             return
         }
 
         if requestedUrl.starts(with: "https://accounts.google.com") &&
            requestedUrl.contains("deniedsigninrejected") {
             decisionHandler(.cancel)
-            webview.customUserAgent = ""
-//            webview.load(URLRequest(url: webView.url!))
-            webview.load(URLRequest(url: URL(string: "https://accounts.google.com")!))
+            webView.customUserAgent = nil
+            webView.load(URLRequest(url: URL(string: "https://accounts.google.com")!))
             return
         }
         //
@@ -197,7 +213,7 @@ extension ViewController: WKNavigationDelegate {
             userAgent = ""
         }
 
-        webview.customUserAgent = userAgent
+        webView.customUserAgent = userAgent
         print("\(requestedUrl) -> \(userAgent)")
         decisionHandler(.allow)
     }

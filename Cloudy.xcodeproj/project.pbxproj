@@ -10,6 +10,7 @@
 		44A4D07E127721BBFE3C3EA5 /* WebViewControllerBridge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44A4D67F8889E455A547CB96 /* WebViewControllerBridge.swift */; };
 		44A4D0FBB22CC22B053573C3 /* UIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44A4D8A659024EF865AEB5D4 /* UIView.swift */; };
 		44A4D4CD5F66196CB7AD5CB0 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44A4D965A769BDED09733089 /* AppDelegate.swift */; };
+		44A4D7DCB15B8C4799D56BCA /* String.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44A4D0057BF82C52A8F76A38 /* String.swift */; };
 		44A4D8885DB5BE5C73C9FB87 /* UserDefaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44A4D3A1BA3A8B2AB96CB81B /* UserDefaults.swift */; };
 		44A4D8940EA58BA835224F08 /* WKWebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44A4D28CC8536DDE9F1F0250 /* WKWebView.swift */; };
 		44A4DA74333EAD4EFAF5B4EE /* Controller.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44A4D679EE3DA8619FC2FEB2 /* Controller.swift */; };
@@ -24,6 +25,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		44A4D0057BF82C52A8F76A38 /* String.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = String.swift; sourceTree = "<group>"; };
 		44A4D28CC8536DDE9F1F0250 /* WKWebView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WKWebView.swift; sourceTree = "<group>"; };
 		44A4D3A1BA3A8B2AB96CB81B /* UserDefaults.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserDefaults.swift; sourceTree = "<group>"; };
 		44A4D425AA9492A7F66964BC /* Config.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Config.swift; sourceTree = "<group>"; };
@@ -69,6 +71,7 @@
 				44A4D8A659024EF865AEB5D4 /* UIView.swift */,
 				44A4D999AA39891699C55D00 /* GCExtendedGamepad.swift */,
 				44A4D28CC8536DDE9F1F0250 /* WKWebView.swift */,
+				44A4D0057BF82C52A8F76A38 /* String.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -205,6 +208,7 @@
 				44A4DA74333EAD4EFAF5B4EE /* Controller.swift in Sources */,
 				44A4DD2F10965A88D83F5C0D /* SceneDelegate.swift in Sources */,
 				44A4D4CD5F66196CB7AD5CB0 /* AppDelegate.swift in Sources */,
+				44A4D7DCB15B8C4799D56BCA /* String.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

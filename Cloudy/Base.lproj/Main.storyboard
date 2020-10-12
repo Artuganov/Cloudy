@@ -296,14 +296,14 @@
                         </constraints>
                     </view>
                     <connections>
-                        <outlet property="adressBar" destination="bSP-Cq-pJ0" id="896-EM-LnT"/>
+                        <outlet property="addressBar" destination="bSP-Cq-pJ0" id="896-EM-LnT"/>
                         <outlet property="backButton" destination="Hs1-Np-3Tl" id="MqS-F7-cOD"/>
                         <outlet property="forwardButton" destination="nZC-0G-Yuw" id="Oaw-JV-nZp"/>
                         <outlet property="manualUserAgent" destination="wV2-JJ-SJq" id="Qd1-qr-HgF"/>
-                        <outlet property="overlayContainer" destination="Ne2-IP-9p8" id="8EH-f5-oq4"/>
-                        <outlet property="userAgentAuto" destination="Xoa-KH-2mS" id="uxa-Ak-QTO"/>
+                        <outlet property="containerMenu" destination="Ne2-IP-9p8" id="8EH-f5-oq4"/>
+                        <outlet property="automaticUserAgent" destination="Xoa-KH-2mS" id="uxa-Ak-QTO"/>
                         <outlet property="userAgentTextField" destination="ds5-s3-fI9" id="Nui-qB-uY2"/>
-                        <outlet property="webViewContainer" destination="7dc-iF-7nX" id="SYe-nB-Np8"/>
+                        <outlet property="containerWebView" destination="7dc-iF-7nX" id="SYe-nB-Np8"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>

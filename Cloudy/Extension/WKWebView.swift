@@ -35,7 +35,13 @@ private let script = """
                      };
                      """
 
-extension WKWebView: WKNavigationDelegate {
+
+extension WKWebView {
+
+    /// Navigate to a given string
+    func navigateTo(url: String) {
+
+    }
 
     /// Inject inject the js controller script
     func injectControllerScript() {
