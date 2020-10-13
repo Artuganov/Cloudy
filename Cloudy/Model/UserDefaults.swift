@@ -9,9 +9,9 @@ extension UserDefaults {
     }
 
     /// Read / write the user default
-    var lastVisitedUrl: String? {
+    var lastVisitedUrl: URL? {
         get {
-            UserDefaults.standard.string(forKey: Config.lastVisitedUrlKey)
+            UserDefaults.standard.url(forKey: Config.lastVisitedUrlKey)
         }
         set {
             UserDefaults.standard.set(newValue, forKey: Config.lastVisitedUrlKey)

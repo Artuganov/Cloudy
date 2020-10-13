@@ -11,6 +11,7 @@ class WebViewControllerBridge: NSObject, WKScriptMessageHandlerWithReply {
     func userContentController(_ userContentController: WKUserContentController,
                                didReceive message: WKScriptMessage,
                                replyHandler: @escaping (Any?, String?) -> Void) {
+//        print(GCController.controllers().first?.extendedGamepad?.toJson())
         replyHandler(GCController.controllers().first?.extendedGamepad?.toJson(), nil)
     }
 }
