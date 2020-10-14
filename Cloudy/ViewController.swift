@@ -147,9 +147,13 @@ extension ViewController: WKNavigationDelegate {
 
     /// When a stadia page finished loading, inject the controller override script
     func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
-        webView.injectControllerScript()
-        updateAddressBar()
-        UserDefaults.standard.lastVisitedUrl = webView.url
+        if let url = webView.url?.absoluteString {
+            if url.starts(with: Navigator.Config.Url.googleStadia.absoluteString) {
+                webView.injectControllerScript()
+                updateAddressBar()
+                UserDefaults.standard.lastVisitedUrl = webView.url
+            }
+        }
     }
 
     /// After successfully logging in, forward user to stadia
