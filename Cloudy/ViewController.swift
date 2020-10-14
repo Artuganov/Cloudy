@@ -60,6 +60,8 @@ class ViewController: UIViewController {
         // tapping anywhere else in the menu closes it
         let tap = UITapGestureRecognizer(target: self, action: #selector(onOverlayClosePressed))
         containerMenu.addGestureRecognizer(tap)
+        // set user agent to label
+        userAgentTextField.text = UserDefaults.standard.manualUserAgent
     }
 
     /// Update the address bar and its buttons
@@ -141,19 +143,26 @@ extension ViewController {
     @IBAction func onOverlayClosePressed(_ sender: Any) {
         hideMenu()
     }
+
+    /// User agent value changed
+    @IBAction func onUserAgentValueChanged(_ sender: Any) {
+        navigator.userAgent = userAgentTextField.text
+        UserDefaults.standard.manualUserAgent = userAgentTextField.text
+    }
+
 }
 
 extension ViewController: WKNavigationDelegate {
 
     /// When a stadia page finished loading, inject the controller override script
     func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
-        if let url = webView.url?.absoluteString {
-            if url.starts(with: Navigator.Config.Url.googleStadia.absoluteString) {
-                webView.injectControllerScript()
-                updateAddressBar()
-                UserDefaults.standard.lastVisitedUrl = webView.url
-            }
-        }
+        //if let url = webView.url?.absoluteString {
+        //    if url.starts(with: Navigator.Config.Url.googleStadia.absoluteString) {
+        webView.injectControllerScript()
+        //    }
+        //}
+        updateAddressBar()
+        UserDefaults.standard.lastVisitedUrl = webView.url
     }
 
     /// After successfully logging in, forward user to stadia

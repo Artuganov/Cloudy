@@ -27,8 +27,9 @@ private let script:       String        = """
                                                           emulatedGamepad.buttons[i].value = data.buttons[i].value;
                                                       }
                                                       for(let i = 0; i < data.axes.length; i++) {
-                                                          emulatedGamepad.axes[i] = data.axes[i]
+                                                          emulatedGamepad.axes[i] = data.axes[i];
                                                       }
+                                                      emulatedGamepad.timestamp = performance.now();
                                                   } catch(e) { }
                                               });
                                               return [emulatedGamepad, null, null, null];
