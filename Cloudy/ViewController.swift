@@ -38,7 +38,7 @@ class ViewController: UIViewController {
         config.allowsInlineMediaPlayback = true
         config.mediaTypesRequiringUserActionForPlayback = []
         config.applicationNameForUserAgent = "Version/13.0.1 Safari/605.1.15"
-        //config.userContentController.addScriptMessageHandler(WebViewControllerBridge(), contentWorld: WKContentWorld.page, name: "controller")
+        config.userContentController.addScriptMessageHandler(WebViewControllerBridge(), contentWorld: WKContentWorld.page, name: "controller")
         return config
     }()
 
@@ -158,7 +158,7 @@ extension ViewController: WKNavigationDelegate {
     func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
         //if let url = webView.url?.absoluteString {
         //    if url.starts(with: Navigator.Config.Url.googleStadia.absoluteString) {
-        //webView.injectControllerScript()
+        webView.injectControllerScript()
         //    }
         //}
         updateAddressBar()
