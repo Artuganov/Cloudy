@@ -55,7 +55,7 @@ class ViewController: UIViewController {
         if let lastVisitedUrl = UserDefaults.standard.lastVisitedUrl {
             webView.navigateTo(url: lastVisitedUrl)
         } else {
-            webView.navigateTo(url: Navigator.Config.Url.google)
+            webView.navigateTo(url: Navigator.Config.Url.googleStadia)
         }
         // tapping anywhere else in the menu closes it
         let tap = UITapGestureRecognizer(target: self, action: #selector(onOverlayClosePressed))
