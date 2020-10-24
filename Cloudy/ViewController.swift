@@ -34,11 +34,14 @@ class ViewController: UIViewController {
 
     /// The configuration used for the wk webView
     private lazy var webViewConfig: WKWebViewConfiguration = {
+        let preferences = WKPreferences()
+        preferences.javaScriptCanOpenWindowsAutomatically = true
         let config = WKWebViewConfiguration()
         config.allowsInlineMediaPlayback = true
         config.mediaTypesRequiringUserActionForPlayback = []
         config.applicationNameForUserAgent = "Version/13.0.1 Safari/605.1.15"
         config.userContentController.addScriptMessageHandler(WebViewControllerBridge(), contentWorld: WKContentWorld.page, name: "controller")
+        config.preferences = preferences
         return config
     }()
 
@@ -50,6 +53,7 @@ class ViewController: UIViewController {
         webView.translatesAutoresizingMaskIntoConstraints = false
         containerWebView.addSubview(webView)
         webView.fillParent()
+        webView.uiDelegate = self
         webView.navigationDelegate = self
         // initial
         if let lastVisitedUrl = UserDefaults.standard.lastVisitedUrl {
@@ -152,7 +156,7 @@ extension ViewController {
 
 }
 
-extension ViewController: WKNavigationDelegate {
+extension ViewController: WKNavigationDelegate, WKUIDelegate {
 
     /// When a stadia page finished loading, inject the controller override script
     func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
@@ -165,10 +169,24 @@ extension ViewController: WKNavigationDelegate {
         UserDefaults.standard.lastVisitedUrl = webView.url
     }
 
+    /// Handle popups
+    func webView(_ webView: WKWebView, createWebViewWith configuration: WKWebViewConfiguration, for navigationAction: WKNavigationAction, windowFeatures: WKWindowFeatures) -> WKWebView? {
+        if navigationAction.targetFrame == nil {
+            let modalViewController = UIViewController()
+            let modalWebView        = WKWebView(frame: view.bounds, configuration: configuration)
+            modalViewController.view = modalWebView
+            modalWebView.customUserAgent = Navigator.Config.UserAgent.chromeDesktop
+            present(modalViewController, animated: true)
+            modalWebView.load(navigationAction.request)
+            return modalWebView
+        }
+        return nil
+    }
+
     /// After successfully logging in, forward user to stadia
     func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
         let navigation = navigator.getNavigation(for: navigationAction.request.url?.absoluteString)
-        print("navigation -> \(navigation)")
+        print("navigation -> \(navigationAction.request.url?.absoluteString ?? "nil") -> \(navigation)")
         webView.customUserAgent = navigation.userAgent
         if let forwardUrl = navigation.forwardToUrl {
             decisionHandler(.cancel)
@@ -177,4 +195,5 @@ extension ViewController: WKNavigationDelegate {
         }
         decisionHandler(.allow)
     }
+
 }

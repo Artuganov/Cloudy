@@ -25,6 +25,7 @@ class Navigator {
             static let googleMyAccount = URL(string: "https://myaccount.google.com")!
             static let geforceNow      = URL(string: "https://play.geforcenow.com")!
             static let geforceNowLogin = URL(string: "https://www.nvidia.com/en-us/account/gfn")!
+            static let nvidiaRoot      = URL(string: "https://www.nvidia.com")!
         }
 
         struct UserAgent {
@@ -56,7 +57,8 @@ class Navigator {
             return Navigation(userAgent: Config.UserAgent.chromeDesktop, forwardToUrl: nil)
         }
         // regular geforce now
-        if requestedUrl.isEqualTo(other: Config.Url.geforceNow.absoluteString) {
+        if requestedUrl.starts(with: Config.Url.geforceNow.absoluteString) ||
+           requestedUrl.starts(with: Config.Url.nvidiaRoot.absoluteString) {
             return Navigation(userAgent: Config.UserAgent.chromeDesktop, forwardToUrl: nil)
         }
         // some problem with signing
