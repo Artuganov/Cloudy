@@ -5,6 +5,23 @@ import GameController
 
 extension GCExtendedGamepad {
 
+    var pressedKeys: String? {
+        guard let buttonOptions = buttonOptions,
+              let buttonHome = buttonHome,
+              let leftThumbstickButton = leftThumbstickButton,
+              let rightThumbstickButton = rightThumbstickButton else {
+            return "error"
+        }
+        var nonNulls = ""
+        if abs(leftThumbstick.xAxis.value) > 0.01 { nonNulls += "leftThumbstick.xAxis: \(leftThumbstick.xAxis.value), " }
+        if abs(leftThumbstick.yAxis.value) > 0.01 { nonNulls += "leftThumbstick.yAxis: \(leftThumbstick.yAxis.value), " }
+        if abs(leftThumbstickButton.value) > 0.01 { nonNulls += "leftThumbstickButton: \(leftThumbstickButton.value), " }
+        if abs(rightThumbstick.xAxis.value) > 0.01 { nonNulls += "rightThumbstick.xAxis: \(rightThumbstick.xAxis.value), " }
+        if abs(rightThumbstick.yAxis.value) > 0.01 { nonNulls += "rightThumbstick.xAxis: \(rightThumbstick.yAxis.value), " }
+        if abs(rightThumbstickButton.value) > 0.01 { nonNulls += "rightThumbstickButton.value: \(rightThumbstickButton.value), " }
+        return !nonNulls.isEmpty ? nonNulls : nil
+    }
+
     func toJson() -> String? {
         guard let buttonOptions = buttonOptions,
               let buttonHome = buttonHome,
