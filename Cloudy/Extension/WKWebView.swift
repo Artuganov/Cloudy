@@ -38,7 +38,10 @@ private let script:       String        = """
 
 
 /// Mapping from a alias to a full url
-private let aliasMapping: [String: URL] = ["stadia": URL(string: "https://stadia.google.com")!]
+private let aliasMapping: [String: URL] = [
+    "stadia": URL(string: "https://stadia.google.com")!,
+    "gfn": URL(string: "https://play.geforcenow.com/mall")!,
+]
 
 extension WKWebView {
 
