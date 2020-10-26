@@ -9,7 +9,7 @@ A cloud gaming ready browser for iOS.
 - Right now opens stadia path automatically on first startup
 - Supports Bluetooth gaming controllers
 - Fullscreen support
-- The following shortcuts in the address bar
+- The following shortcuts in the address bar (just type in the following alias in order to get to the desired platform)
   - `stadia` -> opens stadia
   - `gfn` -> opens geforce now
 - If you want to go crazy, you can specify your custom user agent
